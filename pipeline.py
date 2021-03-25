@@ -11,5 +11,5 @@ class MyOption(PipelineOptions):
         parser.add_argument('--output')
 
 with beam.Pipeline(options=PipelineOptions()) as p:
-    lines = p | beam.io.ReadFromAvro(input)
+    lines = p | beam.io.ReadFromAvro('gs://temp_data_exam/usa*')
     lines | 'WriteToText' >> beam.io.WriteToText(output, file_name_suffix='.csv')
