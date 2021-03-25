@@ -12,4 +12,4 @@ class MyOption(PipelineOptions):
 
 with beam.Pipeline(options=PipelineOptions()) as p:
     lines = p | beam.io.ReadFromAvro('gs://temp_data_exam/usa.avro')
-    lines | 'WriteToText' >> beam.io.WriteToText(output, file_name_suffix='.csv')
+    lines | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/', file_name_suffix='.csv')
