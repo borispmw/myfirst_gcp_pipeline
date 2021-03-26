@@ -4,12 +4,13 @@ from apache_beam.options.pipeline_options import PipelineOptions
 #from apache_beam.io import WriteToText
 
 
-class MyOption(PipelineOptions):
-    @classmethod
-    def _add_argparse_args(cls, parser):
-        parser.add_argument('--input')
-        parser.add_argument('--output')
+def by_year(record, num_yrs):
+    return()
+
 
 with beam.Pipeline(options=PipelineOptions()) as p:
-    lines = p | beam.io.ReadFromAvro('gs://temp_data_exam/usa.avro')
-    lines | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder', file_name_suffix='.csv')
+    lines = (p | 'ReadData' >> beam.io.ReadFromAvro('gs://temp_data_exam/usa.avro')
+    | 'MapData' >> beam.Map(lambda record: (record['year'],(record['number'],record['name'])))
+    | 'FindingMax' >> beam.CombinePerKey(max)
+    | 'MabData' >> beam.Map(lambda record: (record[0],record[1][0],record[1][1]))
+    lines | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder/output', file_name_suffix='.csv')
