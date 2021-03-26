@@ -14,4 +14,4 @@ with beam.Pipeline(options=PipelineOptions()) as p:
     | 'FindingMax' >> beam.CombinePerKey(max)
     | 'MabData' >> beam.Map(lambda record: (record[0],record[1][0],record[1][1])))
     output = lines | 'Format' >> beam.Map(formatout)
-    output | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder/output', file_name_suffix='.csv',mum_shards=1,header='year,number,name')
+    output | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder/output', file_name_suffix='.csv',num_shards=1,header='year,number,name')
