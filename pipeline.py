@@ -4,8 +4,8 @@ from apache_beam.options.pipeline_options import PipelineOptions
 #from apache_beam.io import WriteToText
 
 
-def formatout(year, num, name):
-    return '{},{},{}'.format(year,num,name)
+def formatout(x):
+    return '{},{},{}'.format(x[0],x[1],x[2])
 
 
 with beam.Pipeline(options=PipelineOptions()) as p:
