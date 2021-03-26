@@ -4,8 +4,8 @@ from apache_beam.options.pipeline_options import PipelineOptions
 #from apache_beam.io import WriteToText
 
 
-def by_year(record, num_yrs):
-    return()
+def formatout(year, num, name):
+    return '{},{},{}'.format(year,num,name)
 
 
 with beam.Pipeline(options=PipelineOptions()) as p:
@@ -13,4 +13,5 @@ with beam.Pipeline(options=PipelineOptions()) as p:
     | 'MapData' >> beam.Map(lambda record: (record['year'],(record['number'],record['name'])))
     | 'FindingMax' >> beam.CombinePerKey(max)
     | 'MabData' >> beam.Map(lambda record: (record[0],record[1][0],record[1][1])))
-    lines | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder/output', file_name_suffix='.csv')
+    output = lines | 'Format' >> beam.Map(formatout)
+    output | 'WriteToText' >> beam.io.WriteToText('gs://temp_data_exam/output_folder/output', file_name_suffix='.csv',mum_shards=1,header='year,number,name')
